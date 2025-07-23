@@ -5,11 +5,15 @@ import (
 	"errors"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type GooglePlayClient struct {
 	AuthData   *AuthData
 	DeviceInfo *DeviceInfo
+	Locale     string
+	LocaleDash string
+	Country    string
 
 	// SessionFile if SessionFile is set then session will be saved to it after modification
 	SessionFile string
@@ -23,16 +27,22 @@ var (
 
 // NewClient makes new client with Pixel3a config
 func NewClient(email, aasToken string) (*GooglePlayClient, error) {
-	return NewClientWithDeviceInfo(email, aasToken, Pixel3a)
+	return NewClientWithDeviceInfo(email, aasToken, Pixel3a, "uk", "en_GB")
 }
 
-func NewClientWithDeviceInfo(email, aasToken string, deviceInfo *DeviceInfo) (client *GooglePlayClient, err error) {
+func NewClientWithDeviceInfo(email, aasToken string, deviceInfo *DeviceInfo, country, locale string) (client *GooglePlayClient, err error) {
 	authData := &AuthData{
 		Email:    email,
 		AASToken: aasToken,
-		Locale:   "en_GB",
+		Locale:   strings.ReplaceAll(locale, "-", "_"),
 	}
-	client = &GooglePlayClient{AuthData: authData, DeviceInfo: deviceInfo}
+	client = &GooglePlayClient{
+		AuthData:   authData,
+		DeviceInfo: deviceInfo,
+		Locale:     authData.Locale,
+		LocaleDash: strings.ReplaceAll(locale, "_", "-"),
+		Country:    country,
+	}
 
 	_, err = client.GenerateGsfID()
 	if err != nil {

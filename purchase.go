@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/Juby210/gplayapi-go/gpproto"
+	"github.com/ark3us/gplayapi-go/gpproto"
 )
 
 var ErrMissingAppDeliveryData = errors.New("buy response is missing AppDeliveryData")

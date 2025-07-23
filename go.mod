@@ -1,4 +1,4 @@
-module github.com/Juby210/gplayapi-go
+module github.com/ark3us/gplayapi-go
 
 go 1.18
 

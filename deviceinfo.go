@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Juby210/gplayapi-go/gpproto"
+	"github.com/ark3us/gplayapi-go/gpproto"
 )
 
 type (

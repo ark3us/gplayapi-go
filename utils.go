@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Juby210/gplayapi-go/gpproto"
+	"github.com/ark3us/gplayapi-go/gpproto"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -1,27 +1,43 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
-	"github.com/Juby210/gplayapi-go"
+	"github.com/ark3us/gplayapi-go"
 )
 
-const sessionFile = "_session.arm64_v8a.json"
+const sessionFile = "session.json"
+
+func loadSession() (string, string, error) {
+	data, err := os.ReadFile(sessionFile)
+	if err != nil {
+		return "", "", err
+	}
+	var sessionData struct {
+		Email    string `json:"email"`
+		AASToken string `json:"aas"`
+	}
+	if err := json.Unmarshal(data, &sessionData); err != nil {
+		return "", "", err
+	}
+	return sessionData.Email, sessionData.AASToken, nil
+}
 
 func main() {
-	client, err := gplayapi.LoadSession(sessionFile)
+	email, aasToken, err := loadSession()
+	client, err := gplayapi.NewClientWithDeviceInfo(
+		email,
+		aasToken,
+		gplayapi.Pixel8,
+		"it",
+		"it_IT",
+	)
 	if err != nil {
-		client, err = gplayapi.NewClient(
-			"email",
-			"aasToken",
-		)
-		if err != nil {
-			log.Fatal(err)
-		}
-		client.SaveSession(sessionFile)
+		log.Fatal(err)
 	}
-	client.SessionFile = sessionFile
 	app, err := client.GetAppDetails("com.discord")
 	if err != nil {
 		log.Fatal(err)
