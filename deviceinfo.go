@@ -49,8 +49,8 @@ func (i *DeviceInfo) GetAuthUserAgent() string {
 func (i *DeviceInfo) GetUserAgent() string {
 	params := []string{
 		"api=3",
-		"versionCode=81582300",
-		"sdk=28",
+		"versionCode=83061810",
+		"sdk=34",
 		"device=" + i.Build.GetDevice(),
 		"hardware=" + i.Build.GetDevice(),
 		"product=" + i.Build.GetProduct(),
@@ -60,7 +60,7 @@ func (i *DeviceInfo) GetUserAgent() string {
 		"isWideScreen=0",
 		"supportedAbis=" + strings.Join(i.Platforms, ";"),
 	}
-	return "Android-Finsky/15.8.23-all [0] [PR] 259261889 (" + strings.Join(params, ",") + ")"
+	return "Android-Finsky/30.6.18-21 [0] [PR] 450795914 (" + strings.Join(params, ",") + ")"
 }
 
 func (i *DeviceInfo) GenerateAndroidCheckInRequest() *gpproto.AndroidCheckinRequest {

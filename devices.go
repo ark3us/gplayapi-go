@@ -36,7 +36,7 @@ var (
 			VersionRelease: 14,
 		},
 		SimOperator:  "22201", // Example: TIM Italy MCC/MNC
-		Platforms:    []string{"arm64-v8a", "armeabi-v7a", "armeabi"},
+		Platforms:    []string{"arm64-v8a", "armeabi-v7a", "armeabi", "x86_64"},
 		CellOperator: "22201", // Example: TIM Italy MCC/MNC
 		Roaming:      roaming,
 		TimeZone:     "Europe/Rome", // [1, 3, 5]
