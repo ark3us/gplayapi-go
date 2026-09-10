@@ -78,7 +78,11 @@ func (client *GooglePlayClient) GenerateGPToken() (string, error) {
 	client.setAuthHeaders(r)
 	b, _, err := doReq(r)
 	if err != nil {
-		return "", nil
+		// Returning a nil error here handed the caller an empty token and no
+		// hint that anything had gone wrong: RegenerateGPToken stored it,
+		// the next request went out unauthenticated, and the failure only
+		// surfaced much later as a nil payload.
+		return "", err
 	}
 	resp := parseResponse(string(b))
 	token, ok := resp["Auth"]
@@ -95,6 +99,9 @@ func (client *GooglePlayClient) toc() (_ *gpproto.TocResponse, err error) {
 		return
 	}
 	tocResp := payload.TocResponse
+	if tocResp == nil {
+		return nil, ErrNilPayload
+	}
 	if tocResp.TosContent != nil && tocResp.TosToken != nil {
 		err = client.acceptTos(*tocResp.TosToken)
 		if err != nil {

@@ -71,6 +71,16 @@ func (client *GooglePlayClient) doAuthedReq(r *http.Request) (res *gpproto.Paylo
 		}
 		res, err = client._doAuthedReq(r)
 	}
+	if err == nil && res == nil {
+		// Play answered with a body carrying no payload: an empty 200, or
+		// whatever an unauthenticated request gets back. _doAuthedReq reports
+		// that as (nil, nil), and every caller that reaches into the payload
+		// then dereferences nil. GetAppDetails and the purchase calls guarded
+		// themselves; toc and uploadDeviceConfig did not, and toc panicked in
+		// production. Guarding here covers the callers that exist and the
+		// ones added later.
+		return nil, ErrNilPayload
+	}
 	return
 }
 
